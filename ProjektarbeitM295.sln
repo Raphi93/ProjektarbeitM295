@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkiServiceAPI", "SkiServiceAPI\SkiServiceAPI.csproj", "{7938BD22-C00B-4BC7-ABF9-7CF2B489DDE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7938BD22-C00B-4BC7-ABF9-7CF2B489DDE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7938BD22-C00B-4BC7-ABF9-7CF2B489DDE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7938BD22-C00B-4BC7-ABF9-7CF2B489DDE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7938BD22-C00B-4BC7-ABF9-7CF2B489DDE3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E21ED5AF-C832-4EEC-A59D-D3E6BC1C57A0}
+	EndGlobalSection
+EndGlobal
