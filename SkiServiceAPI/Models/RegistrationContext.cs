@@ -17,6 +17,7 @@ namespace SkiServiceAPI.Models
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Services> Services { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<State> Status { get; set; }
 
         public RegistrationContext()
         {

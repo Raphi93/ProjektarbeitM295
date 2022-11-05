@@ -1,55 +1,72 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using SkiServiceAPI.DTO;
 using SkiServiceAPI.Models;
 using SkiServiceAPI.Service;
 
 
 namespace SkiServiceAPI.Controller
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class RegistrationController : ControllerBase
     {
-        private IRegisteredServices _registrationService;
+        private IRegistrationServices _regService;
 
-        public RegistrationController(IRegisteredServices registarion)
+        public RegistrationController(IRegistrationServices reg)
         {
-            _registrationService = registarion;
+            _regService = reg;
         }
-        // GET all action
+
+        /// <summary>
+        /// Alles Auslessen
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public ActionResult<List<RegistrationDTO>> GetAll()
-        {
-            if (_registrationService.RegistrationDTO == null)
-            {
-                return NotFound();
-            }
-            return await _registrationService.RegistrationDTO.ToListAsync();
-        }
+        public ActionResult<List<RegistrationDTO>> GetAll() => _regService.GetAll();
+
         // GET by Id action
         [HttpGet("{id}")]
         public ActionResult<RegistrationDTO> Get(int id)
         {
 
+            RegistrationDTO r = _regService.Get(id);
+            if (r == null)
+                return NotFound();
+            return r;
+
         }
         // POST action
         [HttpPost]
-        public IActionResult Create(RegistrationDTO reg)
+        public IActionResult Create(RegistrationDTO regDTO)
         {
+            _regService.Add(regDTO);
 
+            return CreatedAtAction(nameof(Create), new { id = regDTO.Id }, regDTO);
         }
+
         // PUT action
         [HttpPut("{id}")]
-        public IActionResult Update(RegistrationDTO reg)
+        public IActionResult Update(int id, RegistrationDTO regDTO)
         {
+            RegistrationDTO e = _regService.Get(id);
+            if (e == null)
+                return NotFound();
+               
+        
 
+            _regService.Update(e);
+
+            return NoContent();
         }
+
         // DELETE action
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, RegistrationDTO regDTO)
         {
-
+            
+            return NoContent();
         }
     }
 }

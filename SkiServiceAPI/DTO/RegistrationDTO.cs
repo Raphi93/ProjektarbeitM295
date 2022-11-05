@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SkiServiceAPI.Models
+namespace SkiServiceAPI.DTO
 {
     public class RegistrationDTO
     {
@@ -17,10 +17,16 @@ namespace SkiServiceAPI.Models
         public string? Phone { get; set; } 
 
         [JsonPropertyName("priority")]
-        public string? Priority { get; set; } //auserhalb1 fk
+        public string? Priority { get; set; }
 
         [JsonPropertyName("service")]
-        public string? Service { get; set; } //auserhalb2 fk
+        public string? Service { get; set; }
+
+        [JsonPropertyName("status")]
+        public string? Status { get; set; }
+
+        [JsonPropertyName("kommentar")]
+        public string? Kommentar { get; set; }
 
         [JsonPropertyName("create_date")]
         public DateTime CreateDate { get; set; }

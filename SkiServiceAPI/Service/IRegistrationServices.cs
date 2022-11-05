@@ -1,13 +1,13 @@
-﻿using SkiServiceAPI.Models;
+﻿using SkiServiceAPI.DTO;
 
 namespace SkiServiceAPI.Service
 {
     public interface IRegistrationServices
     {
-        List<RegistrationDTO> GetAll();
-        RegistrationDTO? Get(int id);
-        void Add(RegistrationDTO reg);
+        public List<RegistrationDTO> GetAll();
+        public RegistrationDTO? Get(int id);
+        public void Add(RegistrationDTO reg);
         public void Delete(int id);
-        void Update(RegistrationDTO reg);
+        public void Update(RegistrationDTO reg);
     }
 }

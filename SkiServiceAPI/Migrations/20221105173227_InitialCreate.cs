@@ -36,14 +36,26 @@ namespace SkiServiceAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Status",
+                columns: table => new
+                {
+                    StateId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Status", x => x.StateId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    EMail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                    UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(2550)", maxLength: 2550, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -56,11 +68,17 @@ namespace SkiServiceAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PickupDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: false),
-                    PriorityId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    EMail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PickupDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Kommentar = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    ServiceId = table.Column<int>(type: "int", nullable: true),
+                    PriorityId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    StateId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,20 +87,22 @@ namespace SkiServiceAPI.Migrations
                         name: "FK_Registrations_Priorities_PriorityId",
                         column: x => x.PriorityId,
                         principalTable: "Priorities",
-                        principalColumn: "PriorityId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "PriorityId");
                     table.ForeignKey(
                         name: "FK_Registrations_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
-                        principalColumn: "ServiceId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ServiceId");
+                    table.ForeignKey(
+                        name: "FK_Registrations_Status_StateId",
+                        column: x => x.StateId,
+                        principalTable: "Status",
+                        principalColumn: "StateId");
                     table.ForeignKey(
                         name: "FK_Registrations_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -94,6 +114,11 @@ namespace SkiServiceAPI.Migrations
                 name: "IX_Registrations_ServiceId",
                 table: "Registrations",
                 column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Registrations_StateId",
+                table: "Registrations",
+                column: "StateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Registrations_UserId",
@@ -111,6 +136,9 @@ namespace SkiServiceAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Services");
+
+            migrationBuilder.DropTable(
+                name: "Status");
 
             migrationBuilder.DropTable(
                 name: "Users");
