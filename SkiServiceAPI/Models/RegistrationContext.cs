@@ -13,11 +13,11 @@ namespace SkiServiceAPI.Models
         {
             optionsBuilder.UseSqlServer(@"Server=.\;Database=SkiServicePA;Trusted_Connection=True");
         }
-        public DbSet<Priorities> Priorities { get; set; }
-        public DbSet<Registration> Registrations { get; set; }
-        public DbSet<Services> Services { get; set; }
+        public DbSet<Priority> Priority { get; set; }
+        public DbSet<Registration> Registration { get; set; }
+        public DbSet<Service> Service { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<State> Status { get; set; }
+        public DbSet<Status> Status { get; set; }
 
         public RegistrationContext()
         {

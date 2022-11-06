@@ -14,6 +14,5 @@ namespace SkiServiceAPI.Models
         [StringLength(2550)]
         public string? Password { get; set; }
 
-        public ICollection<Registration> Registrations { get; set; } = new List<Registration>();
     }
 }

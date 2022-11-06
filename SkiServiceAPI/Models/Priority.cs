@@ -2,13 +2,13 @@
 
 namespace SkiServiceAPI.Models
 {
-    public class Service
+    public class Priority
     {
-        [Key]
-        public int? ServiceId { get; set; }
+        [Key]   
+        public int PriorityId { get; set; }
 
         [StringLength(50)]
-        public string? ServiceName { get; set;}
+        public string? PriorityName { get; set;}
 
         public ICollection<Registration> Registrations { get; set; } = new List<Registration>();
     }

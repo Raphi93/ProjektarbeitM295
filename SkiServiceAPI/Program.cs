@@ -13,6 +13,8 @@ internal class Program
 
 
         builder.Services.AddScoped<IRegistrationServices, RegistrationServiceDb>();
+        builder.Services.AddScoped<IStatusService, StatusServiceDb>();
+        builder.Services.AddScoped<IJwtService, JwtService>();
 
         builder.Services.AddDbContext<RegistrationContext>(options =>
                        options.UseSqlServer(builder.Configuration.GetConnectionString("RegistrationDB")));

@@ -10,42 +10,42 @@ namespace SkiServiceAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Priorities",
+                name: "Priority",
                 columns: table => new
                 {
                     PriorityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Priority = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                    PriorityName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Priorities", x => x.PriorityId);
+                    table.PrimaryKey("PK_Priority", x => x.PriorityId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "Service",
                 columns: table => new
                 {
                     ServiceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Service = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    ServiceName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.ServiceId);
+                    table.PrimaryKey("PK_Service", x => x.ServiceId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Status",
                 columns: table => new
                 {
-                    StateId = table.Column<int>(type: "int", nullable: false)
+                    StatusId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    StatusName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Status", x => x.StateId);
+                    table.PrimaryKey("PK_Status", x => x.StatusId);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,7 +63,7 @@ namespace SkiServiceAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Registrations",
+                name: "Registration",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -74,74 +74,62 @@ namespace SkiServiceAPI.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PickupDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Kommentar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true),
                     ServiceId = table.Column<int>(type: "int", nullable: true),
                     PriorityId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: true),
-                    StateId = table.Column<int>(type: "int", nullable: true)
+                    StatusId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Registrations", x => x.Id);
+                    table.PrimaryKey("PK_Registration", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Registrations_Priorities_PriorityId",
+                        name: "FK_Registration_Priority_PriorityId",
                         column: x => x.PriorityId,
-                        principalTable: "Priorities",
+                        principalTable: "Priority",
                         principalColumn: "PriorityId");
                     table.ForeignKey(
-                        name: "FK_Registrations_Services_ServiceId",
+                        name: "FK_Registration_Service_ServiceId",
                         column: x => x.ServiceId,
-                        principalTable: "Services",
+                        principalTable: "Service",
                         principalColumn: "ServiceId");
                     table.ForeignKey(
-                        name: "FK_Registrations_Status_StateId",
-                        column: x => x.StateId,
+                        name: "FK_Registration_Status_StatusId",
+                        column: x => x.StatusId,
                         principalTable: "Status",
-                        principalColumn: "StateId");
-                    table.ForeignKey(
-                        name: "FK_Registrations_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "StatusId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Registrations_PriorityId",
-                table: "Registrations",
+                name: "IX_Registration_PriorityId",
+                table: "Registration",
                 column: "PriorityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Registrations_ServiceId",
-                table: "Registrations",
+                name: "IX_Registration_ServiceId",
+                table: "Registration",
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Registrations_StateId",
-                table: "Registrations",
-                column: "StateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Registrations_UserId",
-                table: "Registrations",
-                column: "UserId");
+                name: "IX_Registration_StatusId",
+                table: "Registration",
+                column: "StatusId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Registrations");
-
-            migrationBuilder.DropTable(
-                name: "Priorities");
-
-            migrationBuilder.DropTable(
-                name: "Services");
-
-            migrationBuilder.DropTable(
-                name: "Status");
+                name: "Registration");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Priority");
+
+            migrationBuilder.DropTable(
+                name: "Service");
+
+            migrationBuilder.DropTable(
+                name: "Status");
         }
     }
 }

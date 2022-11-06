@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SkiServiceAPI.DTO;
 using SkiServiceAPI.Models;
-using System.Numerics;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Mvc;
-
-
 
 namespace SkiServiceAPI.Service
 {
@@ -22,7 +17,9 @@ namespace SkiServiceAPI.Service
 
         public List<RegistrationDTO> GetAll()
         {
-            reg = _dbContext.Registrations.Include("User").Include("Service").Include("Priorities").Include("State").ToList();
+
+            reg = _dbContext.Registration.Include("Status").Include("Priority").Include("Service").ToList();
+
             List<RegistrationDTO> result = new List<RegistrationDTO>();
             reg.ForEach(r => result.Add(new RegistrationDTO()
             {
@@ -30,9 +27,9 @@ namespace SkiServiceAPI.Service
                 Name = r.Name,
                 EMail = r.EMail,
                 Phone = r.Phone,
-                Priority = r.Priority.Priority,
-                Service = r.Service.Service,
-                Status = r.State.Status,
+                Priority = r.Priority.PriorityName,
+                Service = r.Service.ServiceName,
+                Status = r.Status.StatusName,
                 Kommentar = r.Kommentar,
                 CreateDate = (DateTime)r.CreateDate,
                 PickupDate = (DateTime)r.PickupDate
@@ -66,44 +63,45 @@ namespace SkiServiceAPI.Service
 
             Registration reg = new Registration()
             {
-                PickupDate = regist.CreateDate,
-                CreateDate = regist.CreateDate,
-                Kommentar = regist.Kommentar,
                 Name = regist.Name,
+                EMail = regist.EMail,
                 Phone = regist.Phone,
-                EMail= regist.EMail,
-
+                Kommentar = regist.Kommentar,
+                CreateDate = regist.CreateDate,
+                PickupDate = regist.PickupDate,
+                Status = _dbContext.Status.FirstOrDefault(e => e.StatusName == regist.Status),
+                Priority = _dbContext.Priority.FirstOrDefault(e => e.PriorityName == regist.Priority),
+                Service = _dbContext.Service.FirstOrDefault(e => e.ServiceName == regist.Service)
             };
-            reg.State = _dbContext.Status.FirstOrDefault(e => e.Status.Equals(regist.Status, StringComparison.OrdinalIgnoreCase));
-            reg.Priority = _dbContext.Priorities.FirstOrDefault(e => e.Priority.Equals(regist.Status, StringComparison.OrdinalIgnoreCase));
-            reg.Service = _dbContext.Services.FirstOrDefault(e => e.Service.Equals(regist.Status, StringComparison.OrdinalIgnoreCase));
+
             _dbContext.Add(reg);
             _dbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var reg = _dbContext.Registrations.Find(id);
+            var reg = _dbContext.Registration.Find(id);
 
-            _dbContext.Registrations.Remove(reg);
+            _dbContext.Registration.Remove(reg);
             _dbContext.SaveChanges();
         }
 
         public void Update(RegistrationDTO regist)
         {
-            var reg = _dbContext.Registrations.Where(r => r.Id == regist.Id).FirstOrDefault();
+            var reg = _dbContext.Registration.Where(e => e.Id == regist.Id).FirstOrDefault();
             if (reg != null)
             {
-                reg.PickupDate = regist.CreateDate;
-                reg.CreateDate = regist.CreateDate;
-                reg.Kommentar = regist.Kommentar;
                 reg.Name = regist.Name;
-                reg.Phone = regist.Phone;
                 reg.EMail = regist.EMail;
-                reg.State = _dbContext.Status.FirstOrDefault(e => e.Status.Equals(regist.Status, StringComparison.OrdinalIgnoreCase));
-                reg.Priority = _dbContext.Priorities.FirstOrDefault(e => e.Priority.Equals(regist.Status, StringComparison.OrdinalIgnoreCase));
-                reg.Service = _dbContext.Services.FirstOrDefault(e => e.Service.Equals(regist.Status, StringComparison.OrdinalIgnoreCase));
+                reg.Phone = regist.Phone;
+                reg.Kommentar= regist.Kommentar;
+                reg.CreateDate = regist.CreateDate;
+                reg.PickupDate = regist.PickupDate;
+                reg.Status = _dbContext.Status.FirstOrDefault(e => e.StatusName == regist.Status);
+                reg.Priority = _dbContext.Priority.FirstOrDefault(e => e.PriorityName == regist.Priority);
+                reg.Service = _dbContext.Service.FirstOrDefault(e => e.ServiceName == regist.Service);
             }
+
             _dbContext.Entry(reg).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }

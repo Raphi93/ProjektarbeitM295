@@ -53,20 +53,32 @@ namespace SkiServiceAPI.Controller
             RegistrationDTO e = _regService.Get(id);
             if (e == null)
                 return NotFound();
-               
-        
+
+            e.Name = regDTO.Name;
+            e.EMail = regDTO.EMail;
+            e.Phone = regDTO.Phone;
+            e.CreateDate = regDTO.CreateDate;
+            e.PickupDate = regDTO.PickupDate;
+            e.Kommentar = regDTO.Kommentar;
+
+            e.Status = regDTO.Status;
+            e.Service = regDTO.Service;
+            e.Priority = regDTO.Priority;
 
             _regService.Update(e);
 
-            return NoContent();
+            return CreatedAtAction(nameof(Create), new { id = id }, regDTO);
         }
 
         // DELETE action
         [HttpDelete("{id}")]
         public IActionResult Delete(int id, RegistrationDTO regDTO)
         {
-            
-            return NoContent();
+            var registration = _regService.Get(id);
+            if (registration == null)
+                return NotFound();
+            _regService.Delete(id);
+            return Content($"Item in row {id} deleted.");
         }
     }
 }

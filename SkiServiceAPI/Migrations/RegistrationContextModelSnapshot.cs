@@ -22,7 +22,7 @@ namespace SkiServiceAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SkiServiceAPI.Models.Priorities", b =>
+            modelBuilder.Entity("SkiServiceAPI.Models.Priority", b =>
                 {
                     b.Property<int>("PriorityId")
                         .ValueGeneratedOnAdd()
@@ -30,13 +30,13 @@ namespace SkiServiceAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PriorityId"), 1L, 1);
 
-                    b.Property<string>("Priority")
+                    b.Property<string>("PriorityName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("PriorityId");
 
-                    b.ToTable("Priorities");
+                    b.ToTable("Priority");
                 });
 
             modelBuilder.Entity("SkiServiceAPI.Models.Registration", b =>
@@ -74,13 +74,7 @@ namespace SkiServiceAPI.Migrations
                     b.Property<int?>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StateId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
+                    b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -89,43 +83,40 @@ namespace SkiServiceAPI.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.HasIndex("StateId");
+                    b.HasIndex("StatusId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Registrations");
+                    b.ToTable("Registration");
                 });
 
-            modelBuilder.Entity("SkiServiceAPI.Models.Services", b =>
+            modelBuilder.Entity("SkiServiceAPI.Models.Service", b =>
                 {
-                    b.Property<int>("ServiceId")
+                    b.Property<int?>("ServiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("ServiceId"), 1L, 1);
 
-                    b.Property<string>("Service")
-                        .IsRequired()
+                    b.Property<string>("ServiceName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ServiceId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Service");
                 });
 
-            modelBuilder.Entity("SkiServiceAPI.Models.State", b =>
+            modelBuilder.Entity("SkiServiceAPI.Models.Status", b =>
                 {
-                    b.Property<int?>("StateId")
+                    b.Property<int?>("StatusId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("StateId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("StatusId"), 1L, 1);
 
-                    b.Property<string>("Status")
+                    b.Property<string>("StatusName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("StateId");
+                    b.HasKey("StatusId");
 
                     b.ToTable("Status");
                 });
@@ -153,47 +144,36 @@ namespace SkiServiceAPI.Migrations
 
             modelBuilder.Entity("SkiServiceAPI.Models.Registration", b =>
                 {
-                    b.HasOne("SkiServiceAPI.Models.Priorities", "Priority")
+                    b.HasOne("SkiServiceAPI.Models.Priority", "Priority")
                         .WithMany("Registrations")
                         .HasForeignKey("PriorityId");
 
-                    b.HasOne("SkiServiceAPI.Models.Services", "Service")
+                    b.HasOne("SkiServiceAPI.Models.Service", "Service")
                         .WithMany("Registrations")
                         .HasForeignKey("ServiceId");
 
-                    b.HasOne("SkiServiceAPI.Models.State", "State")
+                    b.HasOne("SkiServiceAPI.Models.Status", "Status")
                         .WithMany("Registrations")
-                        .HasForeignKey("StateId");
-
-                    b.HasOne("SkiServiceAPI.Models.User", "User")
-                        .WithMany("Registrations")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("StatusId");
 
                     b.Navigation("Priority");
 
                     b.Navigation("Service");
 
-                    b.Navigation("State");
-
-                    b.Navigation("User");
+                    b.Navigation("Status");
                 });
 
-            modelBuilder.Entity("SkiServiceAPI.Models.Priorities", b =>
+            modelBuilder.Entity("SkiServiceAPI.Models.Priority", b =>
                 {
                     b.Navigation("Registrations");
                 });
 
-            modelBuilder.Entity("SkiServiceAPI.Models.Services", b =>
+            modelBuilder.Entity("SkiServiceAPI.Models.Service", b =>
                 {
                     b.Navigation("Registrations");
                 });
 
-            modelBuilder.Entity("SkiServiceAPI.Models.State", b =>
-                {
-                    b.Navigation("Registrations");
-                });
-
-            modelBuilder.Entity("SkiServiceAPI.Models.User", b =>
+            modelBuilder.Entity("SkiServiceAPI.Models.Status", b =>
                 {
                     b.Navigation("Registrations");
                 });

@@ -16,17 +16,8 @@ namespace SkiServiceAPI.Models
         public DateTime? PickupDate { get; set; }
         public string? Kommentar { get; set; }
 
-        public int? UserId { get; set; }
-        public int? ServiceId { get; set; }
-        public int? PriorityId { get; set; }
-        public int? Status { get; set; }
-
-
-        public User? User { get; set; }
-        
-
-        public Services? Service { get; set; }
-        public Priorities? Priority { get; set; }
-        public State? State { get; set; }
+        public Service? Service { get; set; }
+        public Priority? Priority { get; set; }
+        public Status? Status { get; set; }
     }
 }
