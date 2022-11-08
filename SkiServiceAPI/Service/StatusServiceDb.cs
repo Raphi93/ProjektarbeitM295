@@ -15,45 +15,56 @@ namespace SkiServiceAPI.Service
         }
         public List<StatusDTO> GetAll()
         {
-            Status = _dbContext.Status.Include("Registration").Include("Registration.Priority").Include("registration.Service").ToList();
-
-            List<StatusDTO> result = new List<StatusDTO>();
-
-            foreach (var s in Status)
+            try
             {
-                var status = new StatusDTO();
-                status.StatusId = (int)s.StatusId;
-                status.StatusName = s.StatusName;
-
-                foreach (var r in s.Registrations)
+                Status = _dbContext.Status.Include("Registrations").Include("Registrations.Priority").Include("Registrations.Service").ToList();
+                List<StatusDTO> result = new List<StatusDTO>();
+                foreach (var s in Status)
                 {
-                    RegistrationDTO sReg = new RegistrationDTO();
+                    var status = new StatusDTO();
+                    status.StatusId = (int)s.StatusId;
+                    status.StatusName = s.StatusName;
 
-                    sReg.Id = r.Id;
-                    sReg.Name = r.Name;
-                    sReg.EMail = r.EMail;
-                    sReg.Phone = r.Phone;
-                    sReg.CreateDate = (DateTime)r.CreateDate;
-                    sReg.PickupDate = (DateTime)r.PickupDate;
-                    sReg.Kommentar = r.Kommentar;
+                    foreach (var r in s.Registrations)
+                    {
+                        RegistrationDTO sReg = new RegistrationDTO();
 
-                    sReg.Priority = r.Priority.PriorityName;
-                    sReg.Service = r.Service.ServiceName;
-                    sReg.Status = s.StatusName;
+                        sReg.Id = r.Id;
+                        sReg.Name = r.Name;
+                        sReg.EMail = r.EMail;
+                        sReg.Phone = r.Phone;
+                        sReg.CreateDate = (DateTime)r.CreateDate;
+                        sReg.PickupDate = (DateTime)r.PickupDate;
+                        sReg.Kommentar = r.Kommentar;
 
-                    status.Registration.Add(sReg);
+                        sReg.Priority = r.Priority.PriorityName;
+                        sReg.Service = r.Service.ServiceName;
+                        sReg.Status = s.StatusName;
+
+                        status.Registration.Add(sReg);
+                    }
+                    result.Add(status);
                 }
-                result.Add(status);
+                return result;
             }
-            return result;
-
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public StatusDTO GetStatus(string status)
         {
-            List<StatusDTO> t = GetAll();
-            StatusDTO result = t.Find(p => p.StatusName == status);
-            return result;
+            try
+            {
+                List<StatusDTO> t = GetAll();
+                StatusDTO result = t.Find(p => p.StatusName == status);
+                return result;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

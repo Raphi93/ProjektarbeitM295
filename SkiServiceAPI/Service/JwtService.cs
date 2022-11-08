@@ -9,7 +9,7 @@ namespace SkiServiceAPI.Service
     public class JwtService : IJwtService
     {
         private readonly RegistrationContext _dbContext;
-        //Injecting IConfiguration into this class in order to read Token Key from the configuration file
+
         private readonly SymmetricSecurityKey _key;
         public JwtService(IConfiguration config, RegistrationContext dbContext)
         {
@@ -19,40 +19,50 @@ namespace SkiServiceAPI.Service
 
         public string CreateToken(string username)
         {
-
-            //Creating Claims. You can add more information in these claims. For example email id.
-            var claims = new List<Claim>
+            try 
+            {
+                //Creating Claims. You can add more information in these claims. For example email id.
+                var claims = new List<Claim>
                 {
                     new Claim(JwtRegisteredClaimNames.NameId, username)
                 };
 
-            //Creating credentials. Specifying which type of Security Algorithm we are using
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+                //Creating credentials. Specifying which type of Security Algorithm we are using
+                var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
-            //Creating Token description
-            var tokenDescriptor = new SecurityTokenDescriptor
+                //Creating Token description
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.Now.AddMinutes(15),
+                    SigningCredentials = creds
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                //Finally returning the created token
+                return tokenHandler.WriteToken(token);
+            }
+            catch(Exception ex)
             {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(15),
-                SigningCredentials = creds
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            //Finally returning the created token
-            return tokenHandler.WriteToken(token);
-
+                throw new Exception(ex.Message);
+            }
         }
 
         public List<User> Login()
         {
-
-            List<User> users = new List<User>();
-            users = _dbContext.Users.ToList();
-            return users;
-
+            try
+            {
+                List<User> users = new List<User>();
+                users = _dbContext.Users.ToList();
+                return users;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

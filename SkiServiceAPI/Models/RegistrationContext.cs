@@ -9,6 +9,10 @@ namespace SkiServiceAPI.Models
 {
     public partial class RegistrationContext : DbContext
     {
+
+        //Add-Migration InitialCreate
+        //Update-Database
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\;Database=SkiServicePA;Trusted_Connection=True");

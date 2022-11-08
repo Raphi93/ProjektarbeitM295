@@ -4,6 +4,7 @@ using SkiServiceAPI.Service;
 using SkiServiceAPI.DTO;
 using System.Runtime.Intrinsics.X86;
 using static SkiServiceAPI.Service.IJwtService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SkiServiceAPI.Controller
 {
@@ -13,29 +14,40 @@ namespace SkiServiceAPI.Controller
     {
         public List<User> Users { get; set; } = new List<User>();
         private readonly IJwtService _jwtService;
+        private readonly ILogger<StatusController> _logger;
 
-        public UserTokenController(IJwtService jwtservice)
+        public UserTokenController(IJwtService jwtservice, ILogger<StatusController> logger)
         {
             _jwtService = jwtservice;
+            _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult Login([FromBody] UserDTO user)
         {
-            Users = _jwtService.Login();
-
-            foreach (User key in Users)
+            try
             {
-                if (user.UserName == key.UserName && user.Password == key.Password)
+                Users = _jwtService.Login();
+
+                foreach (User key in Users)
                 {
-                    return new JsonResult(new { userName = user.UserName, token = _jwtService.CreateToken(user.UserName) });
+                    if (user.UserName == key.UserName && user.Password == key.Password)
+                    {
+                        return new JsonResult(new { token = _jwtService.CreateToken(user.UserName) });
+                    }
+                    else
+                    {
+                        return Unauthorized("Invalid Credentials");
+                    }
                 }
-                else
-                {
-                    return Unauthorized("Invalid Credentials");
-                }
+                return NoContent();
             }
-            return NoContent();
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occured, {ex.Message}");
+                return NotFound($"Error occured");
+            }
         }
     }
 }
