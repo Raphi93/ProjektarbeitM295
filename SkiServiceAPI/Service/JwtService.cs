@@ -17,6 +17,12 @@ namespace SkiServiceAPI.Service
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
         }
 
+        /// <summary>
+        /// Es genneriert ein Token
+        /// </summary>
+        /// <param name="username">Name</param>
+        /// <returns>Token</returns>
+        /// <exception cref="Exception"></exception>
         public string CreateToken(string username)
         {
             try 
@@ -51,6 +57,11 @@ namespace SkiServiceAPI.Service
             }
         }
 
+        /// <summary>
+        /// Login daten aus der Datenbank holen
+        /// </summary>
+        /// <returns>Namen und Passwort</returns>
+        /// <exception cref="Exception">Datenbank fehler</exception>
         public List<User> Login()
         {
             try

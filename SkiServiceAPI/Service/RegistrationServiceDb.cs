@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Server.IIS.Core;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Win32;
+﻿using Microsoft.EntityFrameworkCore;
 using SkiServiceAPI.DTO;
 using SkiServiceAPI.Models;
 using System.Data;
@@ -18,6 +16,11 @@ namespace SkiServiceAPI.Service
             _dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Gibt alles aus ausser Status = Gelöscht
+        /// </summary>
+        /// <returns>alle angaben</returns>
+        /// <exception cref="Exception">Include fehler oder Datenbank</exception>
         public List<RegistrationDTO> GetAll()
         {
             try
@@ -25,6 +28,7 @@ namespace SkiServiceAPI.Service
                 reg = _dbContext.Registration.Include("Status").Include("Priority").Include("Service").ToList();
 
                 List<RegistrationDTO> result = new List<RegistrationDTO>();
+                reg = reg.Where(e => e.Status.StatusName != "Gelöscht").ToList();
                 reg.ForEach(r => result.Add(new RegistrationDTO()
                 {
                     Id = r.Id,
@@ -46,6 +50,12 @@ namespace SkiServiceAPI.Service
             }
         }
 
+        /// <summary>
+        /// Gibt alle infos von der Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Alle dtaeen von der id</returns>
+        /// <exception cref="Exception">Datenbank fehler</exception>
         public RegistrationDTO? Get(int id)
         {
             try
@@ -74,6 +84,12 @@ namespace SkiServiceAPI.Service
             }
         }
 
+
+        /// <summary>
+        /// Fügt Daten hinzu
+        /// </summary>
+        /// <param name="regist"></param>
+        /// <exception cref="Exception">Datenbank fehler</exception>
         public void Add(RegistrationDTO regist)
         {
             try
@@ -100,23 +116,11 @@ namespace SkiServiceAPI.Service
             }
         }
 
-        public void Delete(int id)
-        {
-            try
-            {
-                var reg = _dbContext.Registration.Find(id);
-
-                //reg.Service.ServiceName = "Gelöscht";
-
-                _dbContext.Registration.Update(reg);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
+        /// <summary>
+        /// Update von den Bestehende einträgen
+        /// </summary>
+        /// <param name="regist"></param>
+        /// <exception cref="Exception">Datenbank fehler</exception>
         public void Update(RegistrationDTO regist)
         {
             try

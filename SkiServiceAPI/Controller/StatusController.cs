@@ -18,6 +18,11 @@ namespace SkiServiceAPI.Controller
             _logger = logger;
         }
 
+        /// <summary>
+        /// Alle status Auslessen mit der Registrationen
+        /// </summary>
+        /// <exception cref="Exception">Datenbank fehler oder es hat noch keine daten</exception>
+        /// <returns>IStatusService GetAll</returns>
         [Authorize]
         [HttpGet]
         public ActionResult<List<StatusDTO>> GetAll()
@@ -33,6 +38,13 @@ namespace SkiServiceAPI.Controller
             }
         }
 
+
+        /// <summary>
+        /// Status Auslessen mit der Registrationen by Id
+        /// </summary>
+        /// <exception cref="Exception">Datenbank fehler oder Id noch nicht existriert</exception>
+        /// <param name="status"></param>
+        /// <returns>IStatusService Get</returns>
         [Authorize]
         [HttpGet("{status}")]
         public ActionResult<StatusDTO> GetByStatus(string status)

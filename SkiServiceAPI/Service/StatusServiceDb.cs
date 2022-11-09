@@ -13,6 +13,11 @@ namespace SkiServiceAPI.Service
         {
             _dbContext = dbContext;
         }
+        /// <summary>
+        /// Get Mothode alle daten vom Status
+        /// </summary>
+        /// <returns>Ausgabe der daten</returns>
+        /// <exception cref="Exception">Fehler der datenbank</exception>
         public List<StatusDTO> GetAll()
         {
             try
@@ -53,6 +58,12 @@ namespace SkiServiceAPI.Service
             }
         }
 
+        /// <summary>
+        /// Je nach Namen Alle Einträge
+        /// </summary>
+        /// <param name="status">Name des Status</param>
+        /// <returns>Ausgabe der daten</returns>
+        /// <exception cref="Exception">Datenbank fehler</exception>
         public StatusDTO GetStatus(string status)
         {
             try

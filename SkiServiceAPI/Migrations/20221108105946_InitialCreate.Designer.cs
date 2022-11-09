@@ -12,7 +12,7 @@ using SkiServiceAPI.Models;
 namespace SkiServiceAPI.Migrations
 {
     [DbContext(typeof(RegistrationContext))]
-    [Migration("20221106101253_InitialCreate")]
+    [Migration("20221108105946_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

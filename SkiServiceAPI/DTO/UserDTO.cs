@@ -9,6 +9,5 @@ namespace SkiServiceAPI.DTO
 
         [JsonPropertyName("password")]
         public string Password { get; set; }
-
     }
 }

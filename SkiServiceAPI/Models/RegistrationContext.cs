@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace SkiServiceAPI.Models
 {
     public partial class RegistrationContext : DbContext
     {
-
+        //PowerShell
         //Add-Migration InitialCreate
         //Update-Database
 

@@ -22,6 +22,12 @@ namespace SkiServiceAPI.Controller
             _logger = logger;
         }
 
+        /// <summary>
+        /// Gibt den JWT-Token
+        /// </summary>
+        /// IStatusService GettAll
+        /// <param name="user">Name und Passwort</param>
+        /// <returns>Token</returns>
         [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult Login([FromBody] UserDTO user)

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using SkiServiceAPI.DTO;
-using SkiServiceAPI.Models;
 using SkiServiceAPI.Service;
 
 
@@ -23,9 +20,10 @@ namespace SkiServiceAPI.Controller
         }
 
         /// <summary>
-        /// Alles Auslessen
+        /// Alle Werte Aulessen Ausser "Gelöscht"
         /// </summary>
-        /// <returns></returns>
+        /// <exception cref="Exception">Datenbank fehler oder alle werte leer ist</exception>
+        /// <returns>IRegistration GetAll</returns>
         [Authorize]
         [HttpGet]
         public ActionResult<List<RegistrationDTO>> GetAll()
@@ -43,6 +41,12 @@ namespace SkiServiceAPI.Controller
             }
         }
 
+        /// <summary>
+        /// Auslessen per id
+        /// </summary>
+        /// <param name="id">Id</param>
+        ///<exception cref="Exception">Datenbank fehler oder Id noch nicht existriert</exception>
+        /// <returns>IRegistration Get</returns>
         // GET by Id action
         [Authorize]
         [HttpGet("{id}")]
@@ -62,7 +66,12 @@ namespace SkiServiceAPI.Controller
             }
         }
 
-        //Post
+        /// <summary>
+        /// Post methde Hinzufügen der Daten
+        /// </summary>
+        /// <exception cref="Exception">Datenbank fehler</exception>
+        /// <param name="regDTO">RegistzrtionDTO</param>
+        /// <returns>Die angaben wo man gemacht hat als return</returns>
         [AllowAnonymous]
         [HttpPost]
         public IActionResult Create(RegistrationDTO regDTO)
@@ -80,7 +89,14 @@ namespace SkiServiceAPI.Controller
             }
         }
 
-        // PUT action
+
+        /// <summary>
+        /// Put methode ändern der daten
+        /// </summary>
+        /// <exception cref="Exception">Datenbank fehler oder Id noch nicht existriert</exception>
+        /// <param name="id">Id</param>
+        /// <param name="regDTO">RegistzrtionDTO</param>
+        /// <returns>Die angaben wo man gemacht hat als return</returns>
         [Authorize]
         [HttpPut("{id}")]
         public IActionResult Update(int id, RegistrationDTO regDTO)
@@ -112,18 +128,26 @@ namespace SkiServiceAPI.Controller
             }
         }
 
-        // DELETE action
+        /// <summary>
+        /// Delete Methode die den Status Gelöscht angibt
+        /// </summary>
+        /// <exception cref="Exception">Datenbank fehler oder Id noch nicht existriert</exception>
+        /// <param name="id">Id</param>
+        /// <returns>Die angaben wo man gemacht hat als return</returns>
         [Authorize]
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
             try
             {
-                var registration = _regService.Get(id);
-                if (registration == null)
+                RegistrationDTO e = _regService.Get(id);
+                if (e == null)
                     return NotFound();
-                _regService.Delete(id);
-                return Content($"Item in row {id} deleted.");
+
+                e.Status = "Gelöscht";
+
+                _regService.Update(e);
+                return CreatedAtAction(nameof(Create), new { id = id });
             }
             catch (Exception ex)
             {

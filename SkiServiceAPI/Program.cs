@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Serilog.Configuration;
 using SkiServiceAPI.Models;
 using SkiServiceAPI.Service;
 using System.Text;
@@ -15,7 +12,7 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        // log 
         var loggerFromSettings = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Configuration)
                 .Enrich.FromLogContext()
@@ -24,21 +21,24 @@ internal class Program
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilog(loggerFromSettings);
 
+        //DI
         builder.Services.AddScoped<IRegistrationServices, RegistrationServiceDb>();
         builder.Services.AddScoped<IStatusService, StatusServiceDb>();
         builder.Services.AddScoped<IJwtService, JwtService>();
 
+        //MSSQL
         builder.Services.AddDbContext<RegistrationContext>(options =>
                        options.UseSqlServer(builder.Configuration.GetConnectionString("RegistrationDB")));
 
+        
         builder.Services.AddControllers();
-
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "JWT", Version = "v1" });
         });
-  
+        
+        //Token
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {

@@ -15,7 +15,6 @@ namespace SkiServiceAPI.Models
         public DateTime? CreateDate { get; set; }
         public DateTime? PickupDate { get; set; }
         public string? Kommentar { get; set; }
-
         public Service? Service { get; set; }
         public Priority? Priority { get; set; }
         public Status? Status { get; set; }
