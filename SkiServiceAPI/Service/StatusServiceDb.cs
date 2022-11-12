@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SkiServiceAPI.DTO;
 using SkiServiceAPI.Models;
+using System.Net.NetworkInformation;
 
 namespace SkiServiceAPI.Service
 {
@@ -33,7 +34,7 @@ namespace SkiServiceAPI.Service
                     foreach (var r in s.Registrations)
                     {
                         RegistrationDTO sReg = new RegistrationDTO();
-
+        
                         sReg.Id = r.Id;
                         sReg.Name = r.Name;
                         sReg.EMail = r.EMail;
@@ -45,6 +46,8 @@ namespace SkiServiceAPI.Service
                         sReg.Priority = r.Priority.PriorityName;
                         sReg.Service = r.Service.ServiceName;
                         sReg.Status = s.StatusName;
+
+                        status.Registration.OrderBy(i => i.Priority);
 
                         status.Registration.Add(sReg);
                     }
