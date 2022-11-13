@@ -107,7 +107,6 @@ namespace SkiServiceAPI.Controller
                 if (e == null)
                     return NotFound();
 
-                e.Name = regDTO.Name;
                 e.EMail = regDTO.EMail;
                 e.Phone = regDTO.Phone;
                 e.CreateDate = regDTO.CreateDate;
