@@ -113,7 +113,7 @@ namespace SkiServiceAPI.Controller
                 e.PickupDate = regDTO.PickupDate;
                 e.Kommentar = regDTO.Kommentar;
 
-                e.Status = "Offen";
+                e.Status = regDTO.EMail;
                 e.Service = regDTO.Service;
                 e.Priority = regDTO.Priority;
 
