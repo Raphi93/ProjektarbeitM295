@@ -106,14 +106,14 @@ namespace SkiServiceAPI.Controller
                 RegistrationDTO e = _regService.Get(id);
                 if (e == null)
                     return NotFound();
-
+                e.Name = regDTO.Name;
                 e.EMail = regDTO.EMail;
                 e.Phone = regDTO.Phone;
                 e.CreateDate = regDTO.CreateDate;
                 e.PickupDate = regDTO.PickupDate;
                 e.Kommentar = regDTO.Kommentar;
 
-                e.Status = regDTO.EMail;
+                e.Status = regDTO.Status;
                 e.Service = regDTO.Service;
                 e.Priority = regDTO.Priority;
 

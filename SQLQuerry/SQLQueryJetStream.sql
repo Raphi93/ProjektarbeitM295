@@ -13,7 +13,7 @@ GO
 
 insert into dbo.Priority(PriorityName)
 Values
-('Express')
+('Express'),
 ('Standard'),
 ('Tief');
 GO

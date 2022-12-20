@@ -28,7 +28,7 @@ namespace SkiServiceAPI.Service
                 reg = _dbContext.Registration.Include("Status").Include("Priority").Include("Service").ToList();
 
                 List<RegistrationDTO> result = new List<RegistrationDTO>();
-                reg = reg.Where(e => e.Status.StatusName != "Gelöscht").ToList();
+                reg = reg.Where(e => e.Status?.StatusName != "Gelöscht").ToList();
                 reg.ForEach(r => result.Add(new RegistrationDTO()
                 {
                     Id = r.Id,

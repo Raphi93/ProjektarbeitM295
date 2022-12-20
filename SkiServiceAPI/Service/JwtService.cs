@@ -8,7 +8,7 @@ namespace SkiServiceAPI.Service
 {
     public class JwtService : IJwtService
     {
-        private readonly RegistrationContext _dbContext;
+        private readonly RegistrationContext _dbContext; 
 
         private readonly SymmetricSecurityKey _key;
         public JwtService(IConfiguration config, RegistrationContext dbContext)
@@ -40,7 +40,7 @@ namespace SkiServiceAPI.Service
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(claims),
-                    Expires = DateTime.Now.AddMinutes(15),
+                    Expires = DateTime.Now.AddDays(1),
                     SigningCredentials = creds
                 };
 
